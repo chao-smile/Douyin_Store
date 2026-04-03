@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>抖音小店自动打印准备指南</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --sub: #6b7280;
+      --primary: #2563eb;
+      --primary-soft: #dbeafe;
+      --line: #e5e7eb;
+      --success: #16a34a;
+      --warn: #ea580c;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 220px);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 32px 0 56px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 55%, #3b82f6 100%);
+      color: #fff;
+      border-radius: 28px;
+      padding: 34px 34px 28px;
+      box-shadow: 0 18px 40px rgba(37, 99, 235, 0.22);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      top: -60px;
+      width: 240px;
+      height: 240px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 50%;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+    }
+
+    h1 {
+      margin: 18px 0 10px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.2;
+    }
+
+    .hero p {
+      max-width: 860px;
+      margin: 0;
+      font-size: 16px;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .hero-stat {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 18px;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-stat strong {
+      display: block;
+      font-size: 22px;
+      margin-bottom: 6px;
+    }
+
+    .hero-stat span {
+      font-size: 13px;
+      color: rgba(255,255,255,0.86);
+    }
+
+    .section {
+      margin-top: 28px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 26px;
+    }
+
+    .section-title .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 0 6px var(--primary-soft);
+      flex: 0 0 auto;
+    }
+
+    .intro-card,
+    .advice-card,
+    .step-card,
+    .flow-card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .intro-card {
+      padding: 22px 24px;
+      color: var(--sub);
+      font-size: 16px;
+    }
+
+    .stages {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .step-card {
+      padding: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 5px;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+    }
+
+    .step-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .step-no {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .step-tag {
+      padding: 6px 12px;
+      font-size: 12px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: var(--primary);
+      border: 1px solid #bfdbfe;
+      white-space: nowrap;
+    }
+
+    .step-card h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .step-card ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .step-card li + li {
+      margin-top: 10px;
+    }
+
+    .sub-list {
+      margin-top: 8px;
+      color: var(--sub);
+    }
+
+    .sub-list strong {
+      color: var(--text);
+    }
+
+    .flow-card {
+      padding: 24px;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .flow-item {
+      background: #f8fbff;
+      border: 1px solid #dbeafe;
+      border-radius: 16px;
+      padding: 18px;
+      position: relative;
+    }
+
+    .flow-item .num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .flow-item h4 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .flow-item p {
+      margin: 0;
+      color: var(--sub);
+      font-size: 14px;
+    }
+
+    .advice-card {
+      padding: 24px;
+    }
+
+    .advice-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+
+    .advice-item {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      background: #fcfdff;
+    }
+
+    .advice-item .label {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      background: #eef2ff;
+      color: #4338ca;
+    }
+
+    .advice-item h4 {
+      margin: 0 0 8px;
+      font-size: 18px;
+    }
+
+    .advice-item p {
+      margin: 0;
+      color: var(--sub);
+      font-size: 14px;
+    }
+
+    .tips {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .tips-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .tips-card h3 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .tips-card p,
+    .tips-card li {
+      color: var(--sub);
+    }
+
+    .tips-card ul {
+      margin: 0;
+      padding-left: 18px;
+    }
+
+    .highlight {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 8px;
+      background: #fff7ed;
+      color: var(--warn);
+      font-weight: 700;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--sub);
+      font-size: 14px;
+      margin-top: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .tips {
+        grid-template-columns: 1fr;
+      }
+
+      .container {
+        width: min(100% - 20px, 1180px);
+      }
+
+      .hero {
+        padding: 24px 20px;
+        border-radius: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <div class="badge">抖音小店 · 自动打印 · 零基础准备指南</div>
+      <h1>从零开始搭建抖店自动打印系统</h1>
+      <p>
+        如果你现在完全没有相关经验或设备，建议优先采用 <strong>云打印</strong> 方案。
+        这样不需要一直开着电脑，更适合新手、个体店主和日常发货场景。
+      </p>
+      <div class="hero-grid">
+        <div class="hero-stat">
+          <strong>4 个阶段</strong>
+          <span>按顺序准备，避免买错设备或开不了单</span>
+        </div>
+        <div class="hero-stat">
+          <strong>300-500 元</strong>
+          <span>适合零基础起步的常见预算区间</span>
+        </div>
+        <div class="hero-stat">
+          <strong>云打印优先</strong>
+          <span>不需要长期守在电脑前，更省心</span>
+        </div>
+        <div class="hero-stat">
+          <strong>可先测试</strong>
+          <span>先用测试订单验证再正式投入使用</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <span class="dot"></span>
+        <h2>准备说明</h2>
+      </div>
+      <div class="intro-card">
+        在买机器之前，最重要的不是先下单设备，而是先确认你的店铺是否具备打印权限、物流电子面单是否能正常申请，以及本地快递网点是否会配合审核。设备买得再好，如果前置条件没搞定，也无法顺利自动打印。
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <span class="dot"></span>
+        <h2>四个阶段</h2>
+      </div>
+      <div class="stages">
+        <article class="step-card">
+          <div class="step-head">
+            <span class="step-no">1</span>
+            <span class="step-tag">资质与账号</span>
+          </div>
+          <h3>第一阶段：基础权限开通</h3>
+          <ul>
+            <li>
+              <strong>抖店后台：</strong>确保店铺已缴纳保证金，并处于正常营业状态。
+            </li>
+            <li>
+              <strong>申请电子面单：</strong>进入 <strong>抖店后台 → 物流 → 电子面单</strong>，选择你当地可用的快递公司，例如中通、韵达、顺丰，点击开通。
+            </li>
+            <li>
+              <strong>联系快递员或网点：</strong>申请后联系当地快递员，让其在系统里完成审核通过。
+            </li>
+          </ul>
+        </article>
+
+        <article class="step-card">
+          <div class="step-head">
+            <span class="step-no">2</span>
+            <span class="step-tag">硬件采购</span>
+          </div>
+          <h3>第二阶段：准备打印设备</h3>
+          <ul>
+            <li>
+              <strong>打印机：</strong>建议选择 <strong>100mm 规格热敏打印机</strong>，因为面单比普通小票大，大机器可以兼容更广泛的打印场景。
+              <div class="sub-list">
+                <strong>推荐方向：</strong>优先选带 <strong>WiFi</strong> 或 <strong>云打印</strong> 功能的型号，例如芯烨、佳博等品牌常见云打印机。
+              </div>
+            </li>
+            <li>
+              <strong>耗材：</strong>
+              <div class="sub-list">
+                ① 热敏面单纸：<strong>100mm × 150mm</strong>（最常见）<br />
+                ② 热敏小票纸：如需附带小票，可再购买配套宽度卷纸
+              </div>
+            </li>
+          </ul>
+        </article>
+
+        <article class="step-card">
+          <div class="step-head">
+            <span class="step-no">3</span>
+            <span class="step-tag">软件配置</span>
+          </div>
+          <h3>第三阶段：安装打单软件</h3>
+          <ul>
+            <li>
+              <strong>官方组件：</strong>在电脑端安装“抖店打印组件”。
+            </li>
+            <li>
+              <strong>打单插件：</strong>到抖店后台 <strong>服务市场</strong> 搜索“打单”。
+              <div class="sub-list">
+                <strong>新手推荐：</strong>优先选择带免费试用或按月付费的软件，例如店管家、妙手、快打等。
+              </div>
+            </li>
+            <li>
+              <strong>自动打印设置：</strong>在插件中勾选 <strong>自动打单</strong> 或 <strong>静默打印</strong>，让新订单自动发送到打印机。
+            </li>
+          </ul>
+        </article>
+
+        <article class="step-card">
+          <div class="step-head">
+            <span class="step-no">4</span>
+            <span class="step-tag">实操测试</span>
+          </div>
+          <h3>第四阶段：跑通实际流程</h3>
+          <ul>
+            <li><strong>装纸：</strong>将热敏纸装入打印机，开机并联网。</li>
+            <li><strong>账号关联：</strong>在打单软件中绑定抖音店铺账号。</li>
+            <li><strong>模板设置：</strong>填写发货人地址、备注信息或小票文案。</li>
+            <li><strong>测试订单：</strong>自己模拟下一单，确认是否会自动出单。</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <span class="dot"></span>
+        <h2>实操流程</h2>
+      </div>
+      <div class="flow-card">
+        <div class="flow">
+          <div class="flow-item">
+            <div class="num">1</div>
+            <h4>装纸开机</h4>
+            <p>将热敏面单纸放入机器，检查打印方向与联网状态是否正常。</p>
+          </div>
+          <div class="flow-item">
+            <div class="num">2</div>
+            <h4>绑定店铺</h4>
+            <p>在打单软件里授权并绑定你的抖店账号，确保订单能同步进来。</p>
+          </div>
+          <div class="flow-item">
+            <div class="num">3</div>
+            <h4>配置模板</h4>
+            <p>设置发货地址、小票内容、打印模板和默认面单格式。</p>
+          </div>
+          <div class="flow-item">
+            <div class="num">4</div>
+            <h4>测试打印</h4>
+            <p>先用测试订单跑一遍，确认自动打印、面单位置和字迹清晰度。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title">
+        <span class="dot"></span>
+        <h2>给零基础卖家的建议</h2>
+      </div>
+      <div class="advice-card">
+        <div class="advice-list">
+          <div class="advice-item">
+            <div class="label">预算建议</div>
+            <h4>300-500 元起步</h4>
+            <p>打印机通常 200-400 元左右，打单软件多数按月收费，适合小店先试运行。</p>
+          </div>
+          <div class="advice-item">
+            <div class="label">省心方案</div>
+            <h4>WiFi 云打印机 + 手机可操作软件</h4>
+            <p>人不在店里时也能远程完成打印，更适合一个人打包、直播间出单等场景。</p>
+          </div>
+          <div class="advice-item">
+            <div class="label">新手重点</div>
+            <h4>先确认权限，再买设备</h4>
+            <p>不少新手的问题不是机器不会打，而是电子面单没开通、快递审核没通过。</p>
+          </div>
+          <div class="advice-item">
+            <div class="label">测试习惯</div>
+            <h4>先测再正式使用</h4>
+            <p>一定要先做一笔测试单，避免正式发货时因模板、联网或插件异常导致延误。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="tips">
+        <div class="tips-card">
+          <h3>推荐的入门路线</h3>
+          <p>
+            对于完全零基础的新手，建议按这个顺序执行：
+            <span class="highlight">先开电子面单 → 再选云打印机 → 再装打单软件 → 最后跑测试单</span>。
+            这样能最大程度避免花了钱却无法实际投入使用。
+          </p>
+        </div>
+        <div class="tips-card">
+          <h3>你要关注的关键点</h3>
+          <ul>
+            <li>店铺是否已正常开店并缴纳保证金</li>
+            <li>快递公司是否支持并审核电子面单</li>
+            <li>打印机是否支持 WiFi 或云打印</li>
+            <li>打单软件是否支持自动打单 / 静默打印</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+    </div>
+  </div>
+</body>
+</html>
